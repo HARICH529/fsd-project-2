@@ -6,6 +6,7 @@ import packageRoute from "./routes/package.route.js";
 import ratingRoute from "./routes/rating.route.js";
 import bookingRoute from "./routes/booking.route.js";
 import paymentRoutes from "./routes/payment.routes.js";
+import uploadRoute from "./routes/upload.route.js";
 import dotenv from "dotenv";
 dotenv.config();
 import path from "path";
@@ -33,6 +34,7 @@ app.use("/api/package", packageRoute);
 app.use("/api/rating", ratingRoute);
 app.use("/api/booking", bookingRoute);
 app.use("/payment", paymentRoutes);
+app.use("/api/upload", uploadRoute);
 
 if (process.env.NODE_ENV_CUSTOM === "production") {
   //static files

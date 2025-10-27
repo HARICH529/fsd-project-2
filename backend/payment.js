@@ -1,5 +1,7 @@
 import Stripe from "stripe";
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY); // your secret key here
+const stripe = new Stripe(
+  "sk_test_51RBaMWLxzru9hDfEhO7bcHtPc1e88j28Zix6GqabB9fAbeN1jw2GcUJZGu5p4KQnFe9SWxZeIwDf3uGralhMTfMP00bgHVGoqh"
+); // your secret key here
 
 const payment = async (number, cvc, exp_month, exp_year, amount) => {
   try {

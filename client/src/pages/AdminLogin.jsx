@@ -8,7 +8,8 @@ import {
 } from "../redux/user/userSlice.js";
 import { useDispatch, useSelector } from "react-redux";
 import loginImage from "../assets/images/login.png";
-const Login = () => {
+
+const AdminLogin = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { loading, error } = useSelector((state) => state.user);
@@ -16,6 +17,7 @@ const Login = () => {
     email: "",
     password: "",
   });
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -27,7 +29,7 @@ const Login = () => {
     e.preventDefault();
     try {
       dispatch(loginStart());
-      const res = await fetch(`/api/auth/login`, {
+      const res = await fetch(`/api/auth/admin/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -38,7 +40,7 @@ const Login = () => {
       if (data?.success) {
         dispatch(loginSuccess(data?.user));
         toast.success(data?.message);
-        navigate("/");
+        navigate("/profile/admin");
       } else {
         dispatch(loginFailure(data?.message));
         toast.error(data?.message);
@@ -50,30 +52,28 @@ const Login = () => {
   };
 
   return (
-    <div className=" w-full mx-auto h-screen flex justify-center items-center bg-[#FFF1DA]">
+    <div className="w-full mx-auto h-screen flex justify-center items-center bg-[#FFF1DA]">
       <div className="w-full min-h-screen flex items-center justify-center bg-[#FFF1DA]">
-        <div className=" rounded-md w-[90%] bg-white md:w-[60%] mx-auto flex flex-col gap-6">
-          {/* Centered Heading */}
+        <div className="rounded-md w-[90%] bg-white md:w-[60%] mx-auto flex flex-col gap-6">
           <h1 className="text-center text-lg mt-6 font-medium md:text-3xl md:font-bold text-gray-800">
-            Welcome to <span className="text-[#6358DC]">Trevo</span>
+            Admin Login to <span className="text-[#6358DC]">Trevo</span>
           </h1>
 
-          {/* Form + Image Box */}
-          <div className="flex flex-col md:flex-row gap-5  h-auto md:h-[450px] rounded-md items-center justify-center p-4">
+          <div className="flex flex-col md:flex-row gap-5 h-auto md:h-[450px] rounded-md items-center justify-center p-4">
             <div className="w-full md:w-1/2 flex justify-center">
-              <img src={loginImage} alt="Login" className="max-h-[300px]" />
+              <img src={loginImage} alt="Admin Login" className="max-h-[300px]" />
             </div>
 
             <form onSubmit={handleSubmit} className="w-full md:w-1/2 px-4">
               <div>
-                <label>Email</label>
+                <label>Admin Email</label>
                 <input
                   type="email"
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
                   className="w-full mt-2 p-3 border rounded-md bg-gray-200 outline-none"
-                  placeholder="Your Email"
+                  placeholder="Admin Email"
                 />
               </div>
               <div className="mt-4">
@@ -84,22 +84,16 @@ const Login = () => {
                   value={formData.password}
                   onChange={handleChange}
                   className="w-full mt-2 p-3 border rounded-md bg-gray-200 outline-none"
-                  placeholder="Your Password"
+                  placeholder="Admin Password"
                 />
               </div>
               <button className="w-full bg-[#EB662B] text-white p-3 mt-4 rounded-md">
-                {loading ? "Loading..." : "Login"}
+                {loading ? "Loading..." : "Admin Login"}
               </button>
               <p className="my-4 text-center">
-                Don't have an account?{" "}
+                Regular user?{" "}
                 <span className="text-[#EB662B]">
-                  <Link to="/signup">Signup</Link>
-                </span>
-              </p>
-              <p className="text-center">
-                Admin?{" "}
-                <span className="text-[#6358DC]">
-                  <Link to="/admin/login">Admin Login</Link>
+                  <Link to="/login">User Login</Link>
                 </span>
               </p>
             </form>
@@ -110,4 +104,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default AdminLogin;

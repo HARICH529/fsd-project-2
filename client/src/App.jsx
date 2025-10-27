@@ -4,6 +4,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
+import AdminLogin from "./pages/AdminLogin";
+import CreateAdmin from "./pages/CreateAdmin";
 import Header from "./pages/components/Header";
 import Profile from "./pages/Profile";
 import About from "./pages/About";
@@ -23,6 +25,7 @@ import Contact from "./pages/Contact";
 import "leaflet/dist/leaflet.css";
 import { FaRobot } from "react-icons/fa";
 import AskAIModal from "./pages/components/AskAIModal";
+import config from "./config/config";
 const App = () => {
   const [showModal, setShowModal] = useState(false);
   const [aiReply, setAIReply] = useState("");
@@ -32,9 +35,7 @@ const App = () => {
     setLoading(true);
     try {
       const res = await axios({
-        url: `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${
-          import.meta.env.VITE_GEMINI_API_KEY
-        }`,
+        url: config.GEMINI_API_URL,
         method: "post",
         data: {
           contents: [
@@ -62,6 +63,8 @@ const App = () => {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin/create" element={<CreateAdmin />} />
             <Route path="/search" element={<Search />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/contact" element={<Contact />} />

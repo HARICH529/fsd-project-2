@@ -77,6 +77,8 @@ const AddPackages = () => {
     data.append("packageName", formData.packageName);
     data.append("packageDescription", formData.packageDescription);
     data.append("packageDestination", formData.packageDestination);
+    data.append("packageDays", formData.packageDays);
+    data.append("packageNights", formData.packageNights);
     data.append("packageAccommodation", formData.packageAccommodation);
     data.append("packageTransportation", formData.packageTransportation);
     data.append("packageMeals", formData.packageMeals);
@@ -95,13 +97,13 @@ const AddPackages = () => {
     try {
       setLoading(true);
       const res = await axios.post(
-        `http://localhost:8000/api/package/update-package/${params?.id}`, // Update API endpoint
+        `/api/package/create-package`, // Create API endpoint
         data,
         {
           headers: {
-            "Content-Type": "multipart/form-data", // Make sure the Content-Type is set to multipart
+            "Content-Type": "multipart/form-data",
           },
-          withCredentials: true, // If you're using cookies or sessions for authentication
+          withCredentials: true,
         }
       );
 
@@ -113,12 +115,26 @@ const AddPackages = () => {
         return;
       }
 
-      toast.success(res.data.message || "Package updated successfully!");
+      toast.success(res.data.message || "Package created successfully!");
       setLoading(false);
       setError(false);
 
-      // Redirect or reset the form if needed
-      navigate(`/package/${params?.id}`);
+      // Reset form after successful creation
+      setFormData({
+        packageName: "",
+        packageDescription: "",
+        packageDestination: "",
+        packageDays: 1,
+        packageNights: 1,
+        packageAccommodation: "",
+        packageTransportation: "",
+        packageMeals: "",
+        packageActivities: "",
+        packagePrice: 500,
+        packageDiscountPrice: 0,
+        packageOffer: false,
+        packageImages: [],
+      });
     } catch (err) {
       console.error("Submit error:", err);
       setLoading(false);

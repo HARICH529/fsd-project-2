@@ -1,5 +1,6 @@
 import axios from "axios";
-const apiKey = import.meta.env.VITE_OPENCAGE_API_KEY;
+import config from "../config/config";
+const apiKey = config.OPENCAGE_API_KEY;
 
 // Function to get latitude and longitude for a given location name
 export const getLatLng = async (location) => {

@@ -109,3 +109,108 @@ export const logOutController = (req, res) => {
     console.log(error);
   }
 };
+
+// Admin login controller
+export const adminLoginController = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(200).send({
+        success: false,
+        message: "All fields are required!",
+      });
+    }
+
+    const validUser = await User.findOne({ email });
+    if (!validUser) {
+      return res.status(404).send({
+        success: false,
+        message: "Admin not found!",
+      });
+    }
+
+    // Check if user is admin (user_role = 1)
+    if (validUser.user_role !== 1) {
+      return res.status(403).send({
+        success: false,
+        message: "Access denied. Admin privileges required.",
+      });
+    }
+
+    const validPassword = bcryptjs.compareSync(password, validUser.password);
+    if (!validPassword) {
+      return res.status(200).send({
+        success: false,
+        message: "Invalid email or password",
+      });
+    }
+
+    const token = await jwt.sign({ id: validUser._id }, "bfuiwrht7895t5uith", {
+      expiresIn: "4d",
+    });
+    const { password: pass, ...rest } = validUser._doc;
+    res
+      .cookie("X_TTMS_access_token", token, {
+        httpOnly: true,
+        maxAge: 4 * 24 * 60 * 60 * 1000,
+      })
+      .status(200)
+      .send({
+        success: true,
+        message: "Admin Login Success",
+        user: rest,
+      });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({
+      success: false,
+      message: "Server error!",
+    });
+  }
+};
+
+// Create admin controller
+export const createAdminController = async (req, res) => {
+  try {
+    const { username, email, password, address, phone } = req.body;
+
+    if (!username || !email || !password || !address || !phone) {
+      return res.status(200).send({
+        success: false,
+        message: "All fields are required!",
+      });
+    }
+
+    const userExists = await User.findOne({ email });
+    if (userExists) {
+      return res.status(200).send({
+        success: false,
+        message: "Admin already exists",
+      });
+    }
+
+    const hashedPassword = bcryptjs.hashSync(password, 10);
+    const newAdmin = new User({
+      username,
+      email,
+      password: hashedPassword,
+      address,
+      phone,
+      user_role: 1, // Set as admin
+    });
+
+    await newAdmin.save();
+
+    return res.status(201).send({
+      message: "Admin Created Successfully",
+      success: true,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({
+      success: false,
+      message: "Error in server!",
+    });
+  }
+};
