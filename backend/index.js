@@ -18,7 +18,7 @@ const app = express();
 connectDB();
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://your-frontend-domain.com"], // Allow requests from frontend URLs
+    origin: ["http://localhost:5173", "https://fsd-project-2-1.onrender.com"], // Allow requests from frontend URLs
     credentials: true, // Allow cookies to be sent and received
   })
 );
