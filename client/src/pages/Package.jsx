@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 import MapModal from "./components/MapModal";
 import { Autoplay } from "swiper/modules";
 import { FaClock } from "react-icons/fa";
+import config from "../config/config";
 const Package = () => {
   const [showMap, setShowMap] = useState(false);
   SwiperCore.use([Navigation]);
@@ -51,7 +52,7 @@ const Package = () => {
   const getPackageData = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`/api/package/get-package-data/${params?.id}`);
+      const res = await fetch(`${config.API_BASE_URL}/api/package/get-package-data/${params?.id}`);
       const data = await res.json();
       if (data?.success) {
         setPackageData({
@@ -101,7 +102,7 @@ const Package = () => {
     }
     try {
       setLoading(true);
-      const res = await fetch("/api/rating/give-rating", {
+      const res = await fetch(`${config.API_BASE_URL}/api/rating/give-rating`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -126,7 +127,7 @@ const Package = () => {
 
   const getRatings = async () => {
     try {
-      const res = await fetch(`/api/rating/get-ratings/${params.id}/4`);
+      const res = await fetch(`${config.API_BASE_URL}/api/rating/get-ratings/${params.id}/4`);
       const data = await res.json();
       if (data) {
         setPackageRatings(data);
@@ -141,7 +142,7 @@ const Package = () => {
   const checkRatingGiven = async () => {
     try {
       const res = await fetch(
-        `/api/rating/rating-given/${currentUser?._id}/${params?.id}`
+        `${config.API_BASE_URL}/api/rating/rating-given/${currentUser?._id}/${params?.id}`
       );
       const data = await res.json();
       setRatingGiven(data?.given);
@@ -246,7 +247,7 @@ const Package = () => {
               {packageData.packageImages.map((img, i) => (
                 <SwiperSlide key={i}>
                   <img
-                    src={`http://localhost:8000/images/${img}`}
+                    src={`${config.API_BASE_URL}/images/${img}`}
                     alt={`slide-${i}`}
                     className="w-full h-full object-cover rounded-xl" // rounded-xl for smooth rounded corners
                   />

@@ -9,18 +9,16 @@ import paymentRoutes from "./routes/payment.routes.js";
 import uploadRoute from "./routes/upload.route.js";
 import dotenv from "dotenv";
 dotenv.config();
-import path from "path";
 import cors from "cors";
 import { connectDB } from "./config/connectDB.js";
 import cookieParser from "cookie-parser";
 
 const app = express();
 
-const __dirname = path.resolve();
 connectDB();
 app.use(
   cors({
-    origin: "http://localhost:5173", // Allow requests from your frontend URL
+    origin: ["http://localhost:5173", "https://your-frontend-domain.com"], // Allow requests from frontend URLs
     credentials: true, // Allow cookies to be sent and received
   })
 );
@@ -36,19 +34,22 @@ app.use("/api/booking", bookingRoute);
 app.use("/payment", paymentRoutes);
 app.use("/api/upload", uploadRoute);
 
-if (process.env.NODE_ENV_CUSTOM === "production") {
-  //static files
-  app.use(express.static(path.join(__dirname, "/client/dist")));
-
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
+// API-only server - no static file serving
+app.get("/", (req, res) => {
+  res.json({
+    message: "Travel and Tourism API Server",
+    version: "1.0.0",
+    endpoints: {
+      auth: "/api/auth",
+      users: "/api/user",
+      packages: "/api/package",
+      bookings: "/api/booking",
+      ratings: "/api/rating",
+      payments: "/payment",
+      uploads: "/api/upload"
+    }
   });
-} else {
-  // //rest api
-  app.use("/", (req, res) => {
-    res.send("Welcome to travel and tourism app");
-  });
-}
+});
 
 const PORT = 8000;
 

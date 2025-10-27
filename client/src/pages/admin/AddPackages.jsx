@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
+import config from "../../config/config";
 const AddPackages = () => {
   const [formData, setFormData] = useState({
     packageName: "",
@@ -97,7 +98,7 @@ const AddPackages = () => {
     try {
       setLoading(true);
       const res = await axios.post(
-        `/api/package/create-package`, // Create API endpoint
+        `${config.API_BASE_URL}/api/package/create-package`, // Create API endpoint
         data,
         {
           headers: {

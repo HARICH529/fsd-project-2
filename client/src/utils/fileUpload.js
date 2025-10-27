@@ -6,7 +6,7 @@ export const uploadSingleFile = async (file) => {
     const formData = new FormData();
     formData.append("file", file);
 
-    const response = await fetch(`/api/upload/single`, {
+    const response = await fetch(`${config.API_BASE_URL}/api/upload/single`, {
       method: "POST",
       body: formData,
     });
@@ -38,7 +38,7 @@ export const uploadMultipleFiles = async (files) => {
       formData.append("files", file);
     });
 
-    const response = await fetch(`/api/upload/multiple`, {
+    const response = await fetch(`${config.API_BASE_URL}/api/upload/multiple`, {
       method: "POST",
       body: formData,
     });

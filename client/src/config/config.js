@@ -1,6 +1,6 @@
 const config = {
   // API Configuration
-  API_BASE_URL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000',
+  API_BASE_URL: import.meta.env.VITE_API_BASE_URL || 'https://fsd-project-2-1.onrender.com',
   
   // External APIs
   GOOGLE_MAPS_API_KEY: import.meta.env.VITE_APP_GOOGLE_MAPS_KEY,

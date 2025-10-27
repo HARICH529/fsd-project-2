@@ -23,6 +23,7 @@ import Payments from "./Payments";
 import RatingsReviews from "./RatingsReviews";
 import History from "./History";
 import { toast } from "react-toastify";
+import config from "../../config/config";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -55,7 +56,7 @@ const AdminDashboard = () => {
   const handleLogout = async () => {
     try {
       dispatch(logOutStart());
-      const res = await fetch("/api/auth/logout");
+      const res = await fetch(`${config.API_BASE_URL}/api/auth/logout`);
       const data = await res.json();
       if (data?.success !== true) {
         dispatch(logOutFailure(data?.message));

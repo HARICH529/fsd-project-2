@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import loginImage from "../assets/images/login.png";
+import config from "../config/config";
 
 const CreateAdmin = () => {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ const CreateAdmin = () => {
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await fetch(`/api/auth/admin/create`, {
+      const res = await fetch(`${config.API_BASE_URL}/api/auth/admin/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
